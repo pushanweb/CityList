@@ -74,6 +74,26 @@ public class MainActivityTest {
 
         onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click()); //Check the content on the list - no content in this case
         Espresso.pressBack(); //Back button
+
+    }
+
+    @Test
+    public void testIntent(){
+        String[] cityName = {"Chittagong","Khulna","Dhaka"};
+
+        for (int i=0;i<cityName.length;i++){
+            onView(withId(R.id.button_add)).perform(click());
+            onView(withId(R.id.editText_name)).perform(ViewActions.typeText(cityName[i]));
+            onView(withId(R.id.button_confirm)).perform(click());
+        }
+
+        for (int i=0;i<cityName.length;i++){
+            onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(i).perform(click());
+            onView(withId(R.id.second)).check(matches(isDisplayed()));
+            onView(withText(cityName[i])).check(matches(isDisplayed()));
+            onView(withId(R.id.button)).perform(click());
+            onView(withId(R.id.first)).check(matches(isDisplayed()));
+        }
     }
 
 }
